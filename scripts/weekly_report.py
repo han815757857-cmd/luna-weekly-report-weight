@@ -86,10 +86,13 @@ def parse_records(records: list[dict]) -> list[dict]:
         date_val = f.get("日期", "")
         if not date_val:
             continue
-        # 日期字段是字符串 "2026-06-23" 格式
+        # 日期字段可能是毫秒时间戳（int）或 "2026-06-23" 字符串
         try:
-            d = datetime.strptime(str(date_val)[:10], "%Y-%m-%d").replace(tzinfo=TZ8)
-        except ValueError:
+            if isinstance(date_val, (int, float)):
+                d = datetime.fromtimestamp(date_val / 1000, tz=TZ8)
+            else:
+                d = datetime.strptime(str(date_val)[:10], "%Y-%m-%d").replace(tzinfo=TZ8)
+        except (ValueError, OSError):
             continue
         if not (start <= d <= end):
             continue
