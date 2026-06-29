@@ -164,7 +164,7 @@ Luna 当前目标：7月底达到 65kg。今天是 {datetime.now(TZ8).strftime('
     cmd = [
         "curl", "-s", "-X", "POST",
         f"{ANTHROPIC_BASE_URL}/v1/messages",
-        "-H", f"x-api-key: {ANTHROPIC_API_KEY}",
+        "-H", f"Authorization: Bearer {ANTHROPIC_API_KEY}",
         "-H", "anthropic-version: 2023-06-01",
         "-H", "Content-Type: application/json",
         "-d", json.dumps(payload),
